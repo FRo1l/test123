@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Зачётная книжка — СПбПУ</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: "Segoe UI", sans-serif;
+    }
+    .sidebar {
+      background-color: #1b5e20;
+      min-height: 100vh;
+      color: white;
+    }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 1rem;
+    }
+    .sidebar a:hover {
+      background-color: #2e7d32;
+    }
+    .header-bar {
+      background-color: #1b5e20;
+      color: white;
+      padding: 1rem;
+    }
+    .table thead th {
+      background-color: #2e7d32;
+      color: white;
+    }
+    .grade-not-appeared {
+      background-color: #ff7043; /* оранжево-красный */
+      color: white;
+    }
+    .grade-failed {
+      background-color: #d32f2f; /* красный */
+      color: white;
+    }
+    .grade-satisfactory {
+      background-color: #fbc02d; /* желтый */
+      color: black;
+    }
+    .grade-passed {
+      background-color: #1976d2; /* зеленовато-синий */
+      color: white;
+    }
+    .grade-good {
+      background: #54db1e;
+      color: black;
+    }
+    .filters {
+      margin-bottom: 1rem;
+    }
+    .filters select {
+      max-width: 200px;
+      margin-right: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <nav class="col-md-2 sidebar d-flex flex-column">
+        <h4 class="mt-4 ps-3">Навигация</h4>
+        <a href="mainpage.html">Профиль</a>
+        <a href="zachetkniga.html">Зачётная книжка</a>
+        <a href="raspisanie.html">Расписание</a>
+        <a href="#">Настройки</a>
+        <div class="mt-auto p-3 small text-center text-white-50">
+          © 2025 СПбПУ
+        </div>
+      </nav>
+
+      <!-- Main content -->
+      <main class="col-md-10 p-4">
+        <h3>Зачётная книжка</h3>
+
+        <div class="mb-4">
+          <p><strong>Номер зачетки:</strong> № 23331006</p>
+          <p><strong>ФИО:</strong> Сарафанкин И.Д.</p>
+        </div>
+
+        <div class="filters d-flex flex-wrap mb-3">
+          <select id="semesterSelect" class="form-select" onchange="filterTable()">
+            <option value="all">Все семестры</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4" selected>4</option>
+          </select>
+
+          <select id="controlTypeSelect" class="form-select" onchange="filterTable()">
+            <option value="all">Все типы контроля</option>
+            <option value="Диф.зачет">Диф.зачет</option>
+            <option value="Зачет">Зачет</option>
+            <option value="Курсовая работа">Курсовая работа</option>
+            <option value="Курсовой проект">Курсовой проект</option>
+            <option value="Экзамен">Экзамен</option>
+          </select>
+
+          <select id="gradeSelect" class="form-select" onchange="filterTable()">
+            <option value="all">Все оценки</option>
+            <option value="Зачтено">Зачтено</option>
+            <option value="Не зачтено">Не зачтено</option>
+            <option value="Удовлетворительно">Удовлетворительно</option>
+            <option value="Хорошо">Хорошо</option>
+            <option value="Не явился">Не явился</option>
+          </select>
+        </div>
+
+        <table class="table table-striped table-bordered align-middle text-center">
+          <thead>
+            <tr>
+              <th>Дисциплина</th>
+              <th>Преподаватель</th>
+              <th>Тип контроля</th>
+              <th>Семестр</th>
+              <th>Часы</th>
+              <th>Зач.ед.</th>
+              <th>Оценка</th>
+            </tr>
+          </thead>
+          <tbody id="gradeTableBody">
+            <tr data-semester="4" data-control="Зачет" data-grade="Зачтено">
+              <td>Безопасность жизнедеятельности</td>
+              <td>Шавуров С.А.</td>
+              <td>Зачет</td>
+              <td>4</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="4" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Вычислительная математика</td>
+              <td>Скрябнев А.Ю.,Керпелева С.Ю.</td>
+              <td>Экзамен</td>
+              <td>4</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="4" data-control="Зачет" data-grade="Не зачтено">
+              <td>Детали машин и основы конструирования</td>
+              <td>Жавнер М.В.</td>
+              <td>Зачет</td>
+              <td>4</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-failed">Не зачтено</td>
+            </tr>
+            <tr data-semester="4" data-control="Зачет" data-grade="Зачтено">
+              <td>Основы проектной деятельности</td>
+              <td>Габриель А.С.</td>
+              <td>Зачет</td>
+              <td>4</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="4" data-control="Зачет" data-grade="Зачтено">
+              <td>САПР в мехатронике</td>
+              <td>Решетов Д.В.</td>
+              <td>Зачет</td>
+              <td>4</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="4" data-control="Курсовая работа" data-grade="Зачтено">
+              <td>Сопротивление материалов</td>
+              <td>Корихин Н.В.,Керпелева С.Ю.</td>
+              <td>Курсовая работа</td>
+              <td>4</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="4" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Сопротивление материалов</td>
+              <td>Артюх В.Г.,Керпелева С.Ю.</td>
+              <td>Экзамен</td>
+              <td>4</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="4" data-control="Курсовой проект" data-grade="Удовлетворительно">
+              <td>Теория механизмов и машин</td>
+              <td>Козликин Д.П.,Керпелева С.Ю.</td>
+              <td>Курсовой проект</td>
+              <td>4</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="4" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Теория механизмов и машин</td>
+              <td>Козликин Д.П.</td>
+              <td>Экзамен</td>
+              <td>4</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="4" data-control="Курсовая работа" data-grade="Зачтено">
+              <td>Технология конструкционных материалов</td>
+              <td>Новиков В.И.</td>
+              <td>Курсовая работа</td>
+              <td>4</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="4" data-control="Зачет" data-grade="Зачтено">
+              <td>Технология конструкционных материалов</td>
+              <td>Кобчиков В.С.,Кудрявцев В.Н.</td>
+              <td>Зачет</td>
+              <td>4</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="4" data-control="Экзамен" data-grade="Не зачтено">
+              <td>Технология конструкционных материалов</td>
+              <td>Кобчиков В.С.,Керпелева С.Ю.,Кудрявцев В.Н.</td>
+              <td>Экзамен</td>
+              <td>4</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-satisfactory">Не зачтено</td>
+            </tr>
+            <tr data-semester="4" data-control="Зачет" data-grade="Не явился">
+              <td>Экологические вопросы направления</td>
+              <td>Колесникова А.Ю.</td>
+              <td>Зачет</td>
+              <td>4</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-not-appeared">Не явился</td>
+            </tr>
+            <tr data-semester="4" data-control="Зачет" data-grade="Не явился">
+              <td>Элективная физическая культура и спорт</td>
+              <td>Устинова О.Н.,Карасева Т.В.</td>
+              <td>Зачет</td>
+              <td>4</td>
+              <td>82</td>
+              <td></td>
+              <td class="grade-not-appeared">Не явился</td>
+            </tr>
+            <tr data-semester="3" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Высшая математика</td>
+              <td>Давыдов Р.В.</td>
+              <td>Экзамен</td>
+              <td>3</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="3" data-control="Зачет" data-grade="Зачтено">
+              <td>Вычислительная математика</td>
+              <td>Солодилова Н.А.</td>
+              <td>Зачет</td>
+              <td>3</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="3" data-control="Курсовая работа" data-grade="Зачтено">
+              <td>Инженерная графика (продвинутый уровень)</td>
+              <td>Маркова Т.В.</td>
+              <td>Курсовая работа</td>
+              <td>3</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="3" data-control="Диф.зачет" data-grade="Удовлетворительно">
+              <td>Инженерная графика (продвинутый уровень)</td>
+              <td>Маркова Т.В.</td>
+              <td>Диф.зачет</td>
+              <td>3</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="3" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Иностранный язык: Базовый курс</td>
+              <td>Амахина С.А.,Дмитриева Н.В.</td>
+              <td>Экзамен</td>
+              <td>3</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="3" data-control="Зачет" data-grade="Зачтено">
+              <td>Искусство и техника в ХХ-ХХI вв.</td>
+              <td>Аладышкин И.В.</td>
+              <td>Зачет</td>
+              <td>3</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="3" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Материаловедение</td>
+              <td>Теплухин В.Г.</td>
+              <td>Экзамен</td>
+              <td>3</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="3" data-control="Зачет" data-grade="Зачтено">
+              <td>Сопротивление материалов</td>
+              <td>Корихин Н.В.,Артюх В.Г.</td>
+              <td>Зачет</td>
+              <td>3</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="3" data-control="Зачет" data-grade="Зачтено">
+              <td>Теоретическая механика</td>
+              <td>Журавлева Е.Ю.</td>
+              <td>Зачет</td>
+              <td>3</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="3" data-control="Зачет" data-grade="Зачтено">
+              <td>Теория механизмов и машин</td>
+              <td>Козликин Д.П.</td>
+              <td>Зачет</td>
+              <td>3</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="3" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Теория механизмов и машин</td>
+              <td>Евграфов А.Н.</td>
+              <td>Экзамен</td>
+              <td>3</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="3" data-control="Зачет" data-grade="Зачтено">
+              <td>Технология конструкционных материалов</td>
+              <td>Третьяков В.П.</td>
+              <td>Зачет</td>
+              <td>3</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="3" data-control="Зачет" data-grade="Зачтено">
+              <td>Элективная физическая культура и спорт</td>
+              <td>Устинова О.Н.,Карасева Т.В.</td>
+              <td>Зачет</td>
+              <td>3</td>
+              <td>82</td>
+              <td></td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="2" data-control="Экзамен" data-grade="Хорошо">
+              <td>Введение в механику машин</td>
+              <td>Семенов Ю.А</td>
+              <td>Экзамен</td>
+              <td>2</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-good">Хорошо</td>
+            </tr>
+            <tr data-semester="2" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Введение в профессиональную деятельность</td>
+              <td>Евграфов А.Н.</td>
+              <td>Экзамен</td>
+              <td>2</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="2" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Высшая математика</td>
+              <td>Давыдов Р.В.</td>
+              <td>Экзамен</td>
+              <td>2</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="2" data-control="Диф.зачет" data-grade="Удовлетворительно">
+              <td>Инженерная графика (продвинутый уровень)</td>
+              <td>Бочков А.Л.,Маркова Т.В.</td>
+              <td>Диф.зачет</td>
+              <td>2</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="2" data-control="Зачет" data-grade="Зачтено">
+              <td>Иностранный язык: Базовый курс</td>
+              <td>Дмитриева Н.В.</td>
+              <td>Зачет</td>
+              <td>2</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="2" data-control="Диф.зачет" data-grade="Удовлетворительно">
+              <td>История России</td>
+              <td>Полторак С.Н.</td>
+              <td>Диф.зачет</td>
+              <td>2</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="2" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Теоретическая механика</td>
+              <td>Журавлева Е.Ю.</td>
+              <td>Экзамен</td>
+              <td>2</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="2" data-control="Зачет" data-grade="Зачтено">
+              <td>Технологии цифровой промышленности</td>
+              <td>Шимченко А.В.</td>
+              <td>Зачет</td>
+              <td>2</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="2" data-control="Экзамен" data-grade="Не явился">
+              <td>Физика</td>
+              <td>Насрединов Ф.С.</td>
+              <td>Экзамен</td>
+              <td>2</td>
+              <td>180</td>
+              <td>5</td>
+              <td class="grade-not-appeared">Не явился</td>
+            </tr>
+            <tr data-semester="2" data-control="Зачет" data-grade="Зачтено">
+              <td>Философия</td>
+              <td>Соколова Н.А.,Коломейцев И.В.</td>
+              <td>Зачет</td>
+              <td>2</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="2" data-control="Экзамен" data-grade="Хорошо">
+              <td>Цифровая культура</td>
+              <td>Ситкин Д.С.</td>
+              <td>Экзамен</td>
+              <td>2</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-good">Хорошо</td>
+            </tr>
+            <tr data-semester="2" data-control="Диф.зачет" data-grade="Удовлетворительно">
+              <td>Экономическая культура</td>
+              <td>Покровская Л.Л.</td>
+              <td>Диф.зачет</td>
+              <td>2</td>
+              <td>108</td>
+              <td>3</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="2" data-control="Зачет" data-grade="Зачтено">
+              <td>Элективная физическая культура и спорт</td>
+              <td>Устинова О.Н.,Мжельский М.В.</td>
+              <td>Зачет</td>
+              <td>2</td>
+              <td>82</td>
+              <td></td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="1" data-control="Экзамен" data-grade="Хорошо">
+              <td>Высшая математика</td>
+              <td>Давыдов Р.В.</td>
+              <td>Экзамен</td>
+              <td>1</td>
+              <td>216</td>
+              <td>6</td>
+              <td class="grade-good">Хорошо</td>
+            </tr>
+            <tr data-semester="1" data-control="Диф.зачет" data-grade="Удовлетворительно">
+              <td>Инженерная графика</td>
+              <td>Маркова Т.В.</td>
+              <td>Диф.зачет</td>
+              <td>1</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="1" data-control="Зачет" data-grade="Зачтено">
+              <td>Иностранный язык: Базовый курс</td>
+              <td>Божик С.Л.,Дмитриева Н.В.</td>
+              <td>Зачет</td>
+              <td>1</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="1" data-control="Зачет" data-grade="Зачтено">
+              <td>История России</td>
+              <td>Полторак С.Н.</td>
+              <td>Зачет</td>
+              <td>1</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="1" data-control="Зачет" data-grade="Зачтено">
+              <td>Основы российской государственности</td>
+              <td>Барабанов А.А.</td>
+              <td>Зачет</td>
+              <td>1</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="1" data-control="Зачет" data-grade="Зачтено">
+              <td>Творческие семестры</td>
+              <td>Арканникова М.С.,Барабанова Т.В.</td>
+              <td>Зачет</td>
+              <td>1</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="1" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Физика</td>
+              <td>Насрединов Ф.С.</td>
+              <td>Экзамен</td>
+              <td>1</td>
+              <td>180</td>
+              <td>5</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="1" data-control="Зачет" data-grade="Зачтено">
+              <td>Физическая культура</td>
+              <td>Власюк А.О.</td>
+              <td>Зачет</td>
+              <td>1</td>
+              <td>72</td>
+              <td>2.5</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="1" data-control="Экзамен" data-grade="Удовлетворительно">
+              <td>Химия</td>
+              <td>Полякова В.В.,Семенча А.В.,Соколов И.А.</td>
+              <td>Экзамен</td>
+              <td>1</td>
+              <td>144</td>
+              <td>4</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="1" data-control="Зачет" data-grade="Зачтено">
+              <td>Цифровая грамотность</td>
+              <td>Ситкин Д.С.,Скрябнев А.Ю.</td>
+              <td>Зачет</td>
+              <td>1</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            <tr data-semester="1" data-control="Диф.зачет" data-grade="Удовлетворительно">
+              <td>Цифровой практикум</td>
+              <td>Ситкин Д.С.,Скрябнев А.Ю</td>
+              <td>Диф.зачет</td>
+              <td>1</td>
+              <td>72</td>
+              <td>2</td>
+              <td class="grade-satisfactory">Удовлетворительно</td>
+            </tr>
+            <tr data-semester="1" data-control="Зачет" data-grade="Зачтено">
+              <td>Элективная физическая культура и спорт</td>
+              <td>Устинова О.Н.,Мжельский М.В.</td>
+              <td>Зачет</td>
+              <td>1</td>
+              <td>82</td>
+              <td></td>
+              <td class="grade-passed">Зачтено</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+
+  <script>
+  function filterTable() {
+    const semester = document.getElementById("semesterSelect").value;
+    const controlType = document.getElementById("controlTypeSelect").value;
+    const grade = document.getElementById("gradeSelect").value;
+
+    const rows = document.querySelectorAll("#gradeTableBody tr");
+    rows.forEach(row => {
+      const rowSemester = row.getAttribute("data-semester");
+      const rowControl = row.getAttribute("data-control");
+      const rowGrade = row.getAttribute("data-grade");
+
+      const semesterMatch = semester === "all" || rowSemester === semester;
+      const controlMatch = controlType === "all" || rowControl === controlType;
+      const gradeMatch = grade === "all" || rowGrade === grade;
+
+      if (semesterMatch && controlMatch && gradeMatch) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  }
+
+  // Добавляем вызов фильтрации при загрузке
+  document.addEventListener("DOMContentLoaded", function () {
+    filterTable();
+  });
+</script>
+</body>
+</html>
